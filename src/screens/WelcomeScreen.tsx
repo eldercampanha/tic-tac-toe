@@ -1,20 +1,19 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
-import {Dimensions} from '../constants/dimensions';
+import {View, Text, StyleSheet} from 'react-native';
+import Button from '../components/Button';
+import {Strings} from '../constants/strings';
 
 interface Props {
   onPressStart: () => void;
 }
 
-const {margin, borderRadius} = Dimensions;
+const {title, actionButton} = Strings.en.welcomeScreen;
 
 const WelcomeScreen = ({onPressStart}: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Multi TicTacToe simulation!</Text>
-      <Pressable style={styles.buttonContainer} onPress={onPressStart}>
-        <Text style={styles.buttonTitle}>Start Game</Text>
-      </Pressable>
+      <Text style={styles.title}>{title}</Text>
+      <Button onPress={onPressStart}>{actionButton}</Button>
     </View>
   );
 };
@@ -29,19 +28,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  buttonContainer: {
-    margin: margin.l,
-    borderColor: 'blue',
-    borderRadius: borderRadius.l,
-    borderWidth: borderRadius.s,
-  },
-  buttonTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingVertical: margin.s,
-    paddingHorizontal: margin.m,
   },
 });
 

@@ -1,35 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useTicTacToeResult} from '../hooks/useTicTacToeResult';
 import TicTacToeBoard from '../components/TicTacToeBoard';
 import GameOverScreen from './GameOverScreen';
+import {Player} from '../types/Player';
 
-export interface Player {
-  id: number;
-  symbol: 'X' | '0';
-}
+const INITIAL_BOARD_STATE = Array(9).fill('');
 
-export const p1: Player = {
-  id: 0,
-  symbol: 'X',
-};
-
-export const p2: Player = {
-  id: 1,
-  symbol: '0',
-};
+const p1: Player = {id: 0, name: 'Player 1', symbol: 'X'};
+const p2: Player = {id: 1, name: 'Player 2', symbol: 'O'};
 
 const GameScreen = () => {
-  const [boardState, setBoardState] = useState(Array(9).fill(''));
+  const [boardState, setBoardState] = useState(INITIAL_BOARD_STATE);
   const [currentPlayer, setCurrentPlayer] = useState<Player>(p1);
   const [turns, setTurns] = useState(0);
-  const result = useTicTacToeResult(turns, boardState);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const resetGame = () => {
-    setBoardState(Array(9).fill(''));
-    setTurns(0);
-  };
+  const result = useTicTacToeResult(turns, boardState);
 
   useEffect(() => {
     if (result) {
@@ -37,25 +24,34 @@ const GameScreen = () => {
     }
   }, [result]);
 
-  const handleSquarePress = (index: number) => {
-    if (!boardState[index]) {
-      setBoardState(currentBoardState => {
-        const newBoardState = [...currentBoardState];
-        newBoardState[index] = currentPlayer.symbol;
-        return newBoardState;
-      });
-      setCurrentPlayer(currentPlayer.id === 0 ? p2 : p1);
-      setTurns(curr => curr + 1);
-    }
-  };
+  const resetGameHandler = useCallback(() => {
+    setBoardState(INITIAL_BOARD_STATE);
+    setCurrentPlayer(p1);
+    setIsGameOver(false);
+    setTurns(0);
+  }, []);
+
+  const handleSquarePress = useCallback(
+    (index: number) => {
+      if (!boardState[index]) {
+        setBoardState(currentBoardState => {
+          const newBoardState = [...currentBoardState];
+          newBoardState[index] = currentPlayer.symbol;
+          return newBoardState;
+        });
+        setCurrentPlayer(currentPlayer.id === p1.id ? p2 : p1);
+        setTurns(curr => curr + 1);
+      }
+    },
+    [boardState, currentPlayer.id, currentPlayer.symbol],
+  );
 
   if (isGameOver) {
-    return <GameOverScreen result={result} />;
+    return <GameOverScreen result={result} resetGame={resetGameHandler} />;
   }
 
   return (
     <View style={styles.container}>
-      <Text>Game Screen</Text>
       <View style={styles.board}>
         <TicTacToeBoard
           boardState={boardState}

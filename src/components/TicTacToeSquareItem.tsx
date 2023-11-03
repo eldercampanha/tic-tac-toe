@@ -10,17 +10,19 @@ interface Props {
   position: number;
 }
 
-const TicTacToeSquareItem = ({onPressSquare, position, value}: Props) => {
-  const onPressSquareHandler = () => {
-    onPressSquare(position);
-  };
+const TicTacToeSquareItem = React.memo(
+  ({onPressSquare, position, value}: Props) => {
+    const onPressSquareHandler = () => {
+      onPressSquare(position);
+    };
 
-  return (
-    <TouchableOpacity style={styles.square} onPress={onPressSquareHandler}>
-      <Text style={styles.squareText}>{value}</Text>
-    </TouchableOpacity>
-  );
-};
+    return (
+      <TouchableOpacity style={styles.square} onPress={onPressSquareHandler}>
+        <Text style={styles.squareText}>{value}</Text>
+      </TouchableOpacity>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   square: {
