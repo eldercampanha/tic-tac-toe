@@ -41,17 +41,22 @@ export function useTicTacToeResult(
   useEffect(() => {
     const winner = calculateWinner(turns, board);
     setResult(winner);
-    if (result === 'Draw') {
-      setMessage(messageDraw);
-    } else {
-      setMessage(
-        '🎉 ' +
-          messageWinner +
-          players.find(p => p.symbol === result)?.name +
-          ' 🎉',
-      );
+  }, [board, turns]);
+
+  useEffect(() => {
+    if (result) {
+      if (result === 'Draw') {
+        setMessage(messageDraw);
+      } else {
+        setMessage(
+          '🎉 ' +
+            messageWinner +
+            players.find(p => p.symbol === result)?.name +
+            ' 🎉',
+        );
+      }
     }
-  }, [board, players, result, turns]);
+  }, [players, result]);
 
   return {result, message};
 }

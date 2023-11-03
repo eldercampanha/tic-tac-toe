@@ -34,13 +34,13 @@ To start playing the Tic Tac Toe game, follow these steps:
 4. Run the App:
 
    ```
-      yarn android
-      yarn ios
+   yarn android
+   yarn ios
    ```
 
    ```
-      npm run android
-       npm run ios
+   npm run android
+   npm run ios
    ```
 
 ## License
