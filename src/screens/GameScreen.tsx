@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useTicTacToeResult} from '../hooks/useTicTacToeResult';
 import TicTacToeBoard from '../components/TicTacToeBoard';
 import GameOverScreen from './GameOverScreen';
@@ -9,6 +9,7 @@ const INITIAL_BOARD_STATE = Array(9).fill('');
 
 const p1: Player = {id: 0, name: 'Player 1', symbol: 'X'};
 const p2: Player = {id: 1, name: 'Player 2', symbol: 'O'};
+const players = [p1, p2];
 
 const GameScreen = () => {
   const [boardState, setBoardState] = useState(INITIAL_BOARD_STATE);
@@ -46,26 +47,21 @@ const GameScreen = () => {
     [boardState, currentPlayer.id, currentPlayer.symbol],
   );
 
+  const renderBoard = (player: Player) => (
+    <View key={player.id} style={styles.board}>
+      <TicTacToeBoard
+        enabled={currentPlayer.id === player.id}
+        boardState={boardState}
+        onPressSquare={handleSquarePress}
+      />
+    </View>
+  );
+
   if (isGameOver) {
     return <GameOverScreen result={result} resetGame={resetGameHandler} />;
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.board}>
-        <TicTacToeBoard
-          boardState={boardState}
-          onPressSquare={handleSquarePress}
-        />
-      </View>
-      <View style={styles.board}>
-        <TicTacToeBoard
-          boardState={boardState}
-          onPressSquare={handleSquarePress}
-        />
-      </View>
-    </View>
-  );
+  return <View style={styles.container}>{players.map(renderBoard)}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -76,19 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: 'black',
     borderWidth: 1,
-  },
-  buttonContainer: {
-    margin: 8,
-    borderColor: 'blue',
-    borderRadius: 8,
-    borderWidth: 2,
-  },
-  buttonTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
   },
 });
 

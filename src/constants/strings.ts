@@ -4,7 +4,10 @@ export const Strings = {
       title: 'Welcome to Multi TicTacToe simulation!',
       actionButton: 'Start Game',
     },
-    gameScreen: {},
+    gameScreen: {
+      infoTitleDisable: 'Wait for your turn...',
+      infoTitleEnabled: 'Makre your move!.',
+    },
     gameOverScreen: {
       title: 'Game Over Screen',
       actionButton: 'Play Again',

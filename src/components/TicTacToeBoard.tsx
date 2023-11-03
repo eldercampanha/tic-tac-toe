@@ -1,16 +1,21 @@
 import React from 'react';
-import {Dimensions, FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View, Text} from 'react-native';
 import TicTacToeSquareItem from './TicTacToeSquareItem';
-
-const TIC_TAC_TOE_BOARD_SIZE = Dimensions.get('screen').width * 0.7;
-const SQUARE_SIZE = TIC_TAC_TOE_BOARD_SIZE / 3;
+import {Strings} from '../constants/strings';
+import {Dimensions} from '../constants/dimensions';
 
 interface Props {
   onPressSquare: (index: number) => void;
   boardState: string[];
+  enabled: boolean;
 }
 
-const TicTacToeBoard = ({onPressSquare, boardState}: Props) => {
+const {infoTitleDisable, infoTitleEnabled} = Strings.en.gameScreen;
+const {margin} = Dimensions;
+
+const TicTacToeBoard = ({onPressSquare, boardState, enabled}: Props) => {
+  const infoTitle = enabled ? infoTitleEnabled : infoTitleDisable;
+
   const renderSquare = ({item, index}: {item: string; index: number}) => (
     <TicTacToeSquareItem
       onPressSquare={onPressSquare}
@@ -20,15 +25,22 @@ const TicTacToeBoard = ({onPressSquare, boardState}: Props) => {
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList<string>
-        contentContainerStyle={styles.contentContainer}
-        data={boardState}
-        keyExtractor={(_, index: number) => index.toString()}
-        renderItem={renderSquare}
-        numColumns={3}
-      />
-    </View>
+    <>
+      {
+        <Text style={[styles.infoText, !enabled && styles.disabled]}>
+          {infoTitle}
+        </Text>
+      }
+      <View style={[styles.container, !enabled && styles.disabled]}>
+        <FlatList<string>
+          contentContainerStyle={styles.contentContainer}
+          data={boardState}
+          keyExtractor={(_, index: number) => index.toString()}
+          renderItem={renderSquare}
+          numColumns={3}
+        />
+      </View>
+    </>
   );
 };
 
@@ -43,16 +55,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  square: {
-    width: SQUARE_SIZE,
-    height: SQUARE_SIZE,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
+  infoText: {
+    margin: margin.s,
+    textAlign: 'center',
+    color: 'blue',
   },
-  squareText: {
-    fontSize: 24,
+  disabled: {
+    opacity: 0.4,
+    pointerEvents: 'none',
   },
 });
 
