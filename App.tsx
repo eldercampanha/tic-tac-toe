@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import GameScreen from './src/screens/GameScreen';
+import {Colors} from './src/constants/colors';
 
 function App(): JSX.Element {
   const [hasGameStarted, setHasGameStarted] = useState(false);
@@ -34,6 +35,7 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
 });
 

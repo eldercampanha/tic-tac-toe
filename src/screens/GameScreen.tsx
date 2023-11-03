@@ -4,6 +4,8 @@ import {useTicTacToeResult} from '../hooks/useTicTacToeResult';
 import TicTacToeBoard from '../components/TicTacToeBoard';
 import GameOverScreen from './GameOverScreen';
 import {Player} from '../types/Player';
+import {Colors} from '../constants/colors';
+import {Dimensions} from '../constants/dimensions';
 
 const INITIAL_BOARD_STATE = Array(9).fill('');
 
@@ -11,13 +13,15 @@ const p1: Player = {id: 0, name: 'Player 1', symbol: 'X'};
 const p2: Player = {id: 1, name: 'Player 2', symbol: 'O'};
 const players = [p1, p2];
 
+const {margin} = Dimensions;
+
 const GameScreen = () => {
   const [boardState, setBoardState] = useState(INITIAL_BOARD_STATE);
   const [currentPlayer, setCurrentPlayer] = useState<Player>(p1);
   const [turns, setTurns] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const result = useTicTacToeResult(turns, boardState);
+  const {result, message} = useTicTacToeResult(turns, boardState, players);
 
   useEffect(() => {
     if (result) {
@@ -50,6 +54,8 @@ const GameScreen = () => {
   const renderBoard = (player: Player) => (
     <View key={player.id} style={styles.board}>
       <TicTacToeBoard
+        player={player.name}
+        symbol={player.symbol}
         enabled={currentPlayer.id === player.id}
         boardState={boardState}
         onPressSquare={handleSquarePress}
@@ -57,21 +63,28 @@ const GameScreen = () => {
     </View>
   );
 
-  if (isGameOver) {
-    return <GameOverScreen result={result} resetGame={resetGameHandler} />;
-  }
-
-  return <View style={styles.container}>{players.map(renderBoard)}</View>;
+  return (
+    <>
+      <View style={styles.container}>{players.map(renderBoard)}</View>
+      <GameOverScreen
+        isVisible={isGameOver}
+        resultMessage={message}
+        resetGame={resetGameHandler}
+      />
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: margin.l,
+    backgroundColor: Colors.background,
   },
   board: {
     flex: 1,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.successPositive,
   },
 });
 

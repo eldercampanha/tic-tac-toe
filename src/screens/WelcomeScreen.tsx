@@ -1,18 +1,24 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Button from '../components/Button';
 import {Strings} from '../constants/strings';
+import TextView from '../components/TextView';
+import {Dimensions} from '../constants/dimensions';
 
 interface Props {
   onPressStart: () => void;
 }
 
-const {title, actionButton} = Strings.en.welcomeScreen;
+const {title, subtitle, actionButton} = Strings.en.welcomeScreen;
+const {margin} = Dimensions;
 
 const WelcomeScreen = ({onPressStart}: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <TextView variant="title">{title}</TextView>
+      <TextView textStyle={styles.subtitle} variant="body">
+        {subtitle}
+      </TextView>
       <Button onPress={onPressStart}>{actionButton}</Button>
     </View>
   );
@@ -21,13 +27,11 @@ const WelcomeScreen = ({onPressStart}: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: margin.xl,
     justifyContent: 'center',
-    alignItems: 'center',
   },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  subtitle: {
+    marginBottom: margin.xxl,
   },
 });
 
