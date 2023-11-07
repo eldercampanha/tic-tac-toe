@@ -1,15 +1,12 @@
 import {useState, useEffect} from 'react';
 import {winningCombinations} from '../constants/gameConstants';
-import {Player} from '../types/Player';
+import {Player, Symbol} from '../types/Player';
 import {Strings} from '../constants/strings';
-
-export type GameResult = 'X' | 'O' | 'Draw' | null;
-
-type BoardState = GameResult[];
+import {GameResult} from '../types/GameResult';
 
 const {messageDraw, messageWinner} = Strings.en.useTicTacToeResult;
 
-function calculateWinner(turns: number, board: BoardState): GameResult {
+function calculateWinner(turns: number, board: Symbol[]): GameResult {
   if (turns > 4) {
     for (let i = 0; i < winningCombinations.length; i++) {
       const [a, b, c] = winningCombinations[i];
@@ -18,7 +15,10 @@ function calculateWinner(turns: number, board: BoardState): GameResult {
       }
     }
   }
-  if (turns === 9) {
+  if (
+    board.filter(item => Object.values(Symbol).includes(item as Symbol))
+      .length === 9
+  ) {
     return 'Draw';
   }
 
@@ -32,7 +32,7 @@ interface Result {
 
 export function useTicTacToeResult(
   turns: number,
-  board: BoardState,
+  board: Symbol[],
   players: Player[],
 ): Result {
   const [result, setResult] = useState<GameResult>(null);
@@ -41,7 +41,7 @@ export function useTicTacToeResult(
   useEffect(() => {
     const winner = calculateWinner(turns, board);
     setResult(winner);
-  }, [board, turns]);
+  }, [board, players.length, turns]);
 
   useEffect(() => {
     if (result) {

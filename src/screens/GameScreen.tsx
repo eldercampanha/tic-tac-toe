@@ -3,22 +3,23 @@ import {StyleSheet, View} from 'react-native';
 import {useTicTacToeResult} from '../hooks/useTicTacToeResult';
 import TicTacToeBoard from '../components/TicTacToeBoard';
 import GameOverScreen from './GameOverScreen';
-import {Player} from '../types/Player';
+import {Player, Symbol} from '../types/Player';
 import {Colors} from '../constants/colors';
 import {Dimensions} from '../constants/dimensions';
 
-const INITIAL_BOARD_STATE = Array(9).fill('');
+const INITIAL_BOARD_STATE: Symbol[] = Array(9).fill('');
 
-const p1: Player = {id: 0, name: 'Player 1', symbol: 'X'};
-const p2: Player = {id: 1, name: 'Player 2', symbol: 'O'};
-const players = [p1, p2];
+const p1: Player = {id: 0, name: 'Player 1', symbol: Symbol.X};
+const p2: Player = {id: 1, name: 'Player 2', symbol: Symbol.O};
+const p3: Player = {id: 2, name: 'Player 3', symbol: Symbol.Y};
+const players = [p1, p2, p3];
 
 const {margin} = Dimensions;
 
 const GameScreen = () => {
   const [boardState, setBoardState] = useState(INITIAL_BOARD_STATE);
   const [currentPlayer, setCurrentPlayer] = useState<Player>(p1);
-  const [turns, setTurns] = useState(0);
+  const [turns, setTurns] = useState(1);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const {result, message} = useTicTacToeResult(turns, boardState, players);
@@ -33,7 +34,7 @@ const GameScreen = () => {
     setBoardState(INITIAL_BOARD_STATE);
     setCurrentPlayer(p1);
     setIsGameOver(false);
-    setTurns(0);
+    setTurns(1);
   }, []);
 
   const handleSquarePress = useCallback(
@@ -44,11 +45,11 @@ const GameScreen = () => {
           newBoardState[index] = currentPlayer.symbol;
           return newBoardState;
         });
-        setCurrentPlayer(currentPlayer.id === p1.id ? p2 : p1);
+        setCurrentPlayer(players[turns % players.length]);
         setTurns(curr => curr + 1);
       }
     },
-    [boardState, currentPlayer.id, currentPlayer.symbol],
+    [boardState, currentPlayer, turns],
   );
 
   const renderBoard = (player: Player) => (

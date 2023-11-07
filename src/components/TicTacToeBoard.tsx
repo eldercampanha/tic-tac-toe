@@ -1,17 +1,20 @@
 import React from 'react';
-import {FlatList, StyleSheet, View, Text} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import TicTacToeSquareItem from './TicTacToeSquareItem';
 import {Strings} from '../constants/strings';
 import {Dimensions} from '../constants/dimensions';
 import TextView from './TextView';
 import {Colors} from '../constants/colors';
+import {Symbol} from '../types/Player';
+
+export type SquareValue = '' | Symbol;
 
 interface Props {
   onPressSquare: (index: number) => void;
-  boardState: string[];
+  boardState: Symbol[];
   enabled: boolean;
   player: string;
-  symbol: 'X' | 'O';
+  symbol: SquareValue;
 }
 
 const {infoTitleDisable, infoTitleEnabled} = Strings.en.gameScreen;
@@ -26,7 +29,7 @@ const TicTacToeBoard = ({
 }: Props) => {
   const infoTitle = enabled ? infoTitleEnabled : infoTitleDisable;
 
-  const renderSquare = ({item, index}: {item: string; index: number}) => (
+  const renderSquare = ({item, index}: {item: any; index: number}) => (
     <TicTacToeSquareItem
       onPressSquare={onPressSquare}
       position={index}

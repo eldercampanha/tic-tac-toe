@@ -5,7 +5,7 @@ const TIC_TAC_TOE_BOARD_SIZE = Dimensions.get('screen').width * 0.7;
 const SQUARE_SIZE = TIC_TAC_TOE_BOARD_SIZE / 3;
 
 interface Props {
-  value: string;
+  value: Symbol;
   onPressSquare: (position: number) => void;
   position: number;
 }
@@ -18,7 +18,7 @@ const TicTacToeSquareItem = React.memo(
 
     return (
       <TouchableOpacity style={styles.square} onPress={onPressSquareHandler}>
-        <Text style={styles.squareText}>{value}</Text>
+        <Text style={styles.squareText}>{value.toString()}</Text>
       </TouchableOpacity>
     );
   },
@@ -27,7 +27,7 @@ const TicTacToeSquareItem = React.memo(
 const styles = StyleSheet.create({
   square: {
     width: SQUARE_SIZE,
-    height: SQUARE_SIZE,
+    maxHeight: SQUARE_SIZE,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
