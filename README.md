@@ -4,7 +4,7 @@ Welcome to our classic Tic Tac Toe game! This application simulates a multi-devi
 
 ## Features
 
-- Two-player mode on the same device.
+- Tree-player mode on the same device
 - Cross-platform compatibility (iOS and Android).
 
 ## Getting Started
@@ -42,6 +42,12 @@ To start playing the Tic Tac Toe game, follow these steps:
    npm run android
    npm run ios
    ```
+
+#Game Play 3 players
+
+https://github.com/eldercampanha/tic-tac-toe/assets/10441059/2b3a9141-4af6-4197-bdcc-67ebfe297d84
+
+
 
 ## License
 
